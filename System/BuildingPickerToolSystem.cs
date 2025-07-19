@@ -1,6 +1,7 @@
 ﻿using System;
 using Colossal.Entities;
 using Colossal.Logging;
+using Game.Areas;
 using Game.Buildings;
 using Game.Common;
 using Game.Input;
@@ -38,12 +39,11 @@ namespace StationPylon.System
 		public override void InitializeRaycast()
 		{
 			base.InitializeRaycast();
-
-			m_ToolRaycastSystem.collisionMask = CollisionMask.OnGround | CollisionMask.Overground;
-			m_ToolRaycastSystem.typeMask = TypeMask.MovingObjects | TypeMask.StaticObjects | TypeMask.Lanes;
-			m_ToolRaycastSystem.raycastFlags |= RaycastFlags.SubBuildings | RaycastFlags.SubElements;
-			m_ToolRaycastSystem.netLayerMask = Game.Net.Layer.Fence;
-			m_ToolRaycastSystem.utilityTypeMask = Game.Net.UtilityTypes.Fence;
+			m_ToolRaycastSystem.collisionMask = CollisionMask.Overground | CollisionMask.OnGround | CollisionMask.Underground;
+			m_ToolRaycastSystem.typeMask |= TypeMask.StaticObjects;
+			m_ToolRaycastSystem.areaTypeMask |= AreaTypeMask.Lots;
+			m_ToolRaycastSystem.raycastFlags |= RaycastFlags.BuildingLots;
+			m_ToolRaycastSystem.raycastFlags |= RaycastFlags.SubBuildings;
 		}
 
 		protected override void OnStartRunning()
@@ -99,7 +99,21 @@ namespace StationPylon.System
 
 		private bool IsValidPrefab(ref Entity entity)
 		{
+			var owner = GetOwner(entity);
+			Mod.log.Info("has building " + EntityManager.HasComponent<Building>(owner));
+			Mod.log.Info("has transport " + EntityManager.HasComponent<TransportStationData>(owner));
+			
 			return EntityManager.HasComponent<Building>(entity) && EntityManager.HasComponent<TransportStationData>(entity);
+		}
+
+		private Entity GetOwner(Entity currentEntity)
+		{
+			if (World.DefaultGameObjectInjectionWorld.EntityManager.TryGetComponent<Owner>(currentEntity,
+				    out var owner))
+			{
+				return GetOwner(owner.m_Owner);
+			}
+			return currentEntity;
 		}
 
 		public override bool TrySetPrefab(PrefabBase prefab)
