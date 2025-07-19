@@ -1,0 +1,106 @@
+<WELayout>
+  <self itemName="&lt;EMPTY NODE&gt;">
+    <transform pivot="TopLeft" pivotZ="Front" alignment="Left" arrayAxisOrder="XYZ">
+      <offsetPosition x="-0.019" y="0" z="0" />
+      <offsetRotation x="-0" y="0" z="0" />
+      <scale x="0" y="0" z="0" />
+      <mustDraw>0</mustDraw>
+      <instanceCount>0</instanceCount>
+      <arrayInstances x="1" y="1" z="1" />
+      <arraySpacing x="0" y="0" z="0" />
+    </transform>
+    <textMesh fontName="">
+      <text></text>
+      <MaxWidthMeters>0</MaxWidthMeters>
+    </textMesh>
+    <defaultStyle decalFlags="0">
+      <color>00000000</color>
+      <emissiveColor>00000000</emissiveColor>
+      <metallic>0</metallic>
+      <smoothness>0</smoothness>
+      <emissiveIntensity>0</emissiveIntensity>
+      <emissiveExposureWeight>0</emissiveExposureWeight>
+      <coatStrength>0</coatStrength>
+      <colorMask1>000000</colorMask1>
+      <colorMask2>000000</colorMask2>
+      <colorMask3>000000</colorMask3>
+    </defaultStyle>
+  </self>
+  <children>
+    <self itemName="Side 1">
+      <transform alignment="Left" arrayAxisOrder="XYZ">
+        <offsetPosition x="0.0290000029" y="4.44" z="0.186" />
+        <offsetRotation x="-0" y="0" z="0" />
+        <scale x="0" y="0" z="1" />
+        <mustDraw>1</mustDraw>
+        <instanceCount>-1</instanceCount>
+        <arrayInstances x="1" y="1" z="1" />
+        <arraySpacing x="0" y="0" z="0" />
+      </transform>
+      <layoutMesh>
+        <layout>StationPylon:PylonPrismSide</layout>
+      </layoutMesh>
+    </self>
+  </children>
+  <children>
+    <self itemName="Side 2">
+      <transform alignment="Left" arrayAxisOrder="XYZ">
+        <offsetPosition x="-0.119223833" y="4.44" z="-0.109287664" />
+        <offsetRotation x="-0" y="240" z="0" />
+        <scale x="0" y="0" z="1" />
+        <mustDraw>1</mustDraw>
+        <instanceCount>-1</instanceCount>
+        <arrayInstances x="1" y="1" z="1" />
+        <arraySpacing x="0" y="0" z="0" />
+      </transform>
+      <layoutMesh>
+        <layout>StationPylon:PylonPrismSide</layout>
+      </layoutMesh>
+    </self>
+  </children>
+  <children>
+    <self itemName="Side 3">
+      <transform alignment="Left" arrayAxisOrder="XYZ">
+        <offsetPosition x="0.229839861" y="4.44" z="-0.101835094" />
+        <offsetRotation x="-0" y="120.000008" z="0" />
+        <scale x="0" y="0" z="1" />
+        <mustDraw>1</mustDraw>
+        <instanceCount>-1</instanceCount>
+        <arrayInstances x="1" y="1" z="1" />
+        <arraySpacing x="0" y="0" z="0" />
+      </transform>
+      <layoutMesh>
+        <layout>StationPylon:PylonPrismSide</layout>
+      </layoutMesh>
+    </self>
+  </children>
+  <children>
+    <self itemName="Mesh">
+      <transform alignment="Left" arrayAxisOrder="XYZ">
+        <offsetPosition x="0.29" y="-0.7300001" z="0.03" />
+        <offsetRotation x="-0" y="0" z="0" />
+        <scale x="1" y="1" z="1" />
+        <mustDraw>1</mustDraw>
+        <instanceCount>-1</instanceCount>
+        <arrayInstances x="1" y="1" z="1" />
+        <arraySpacing x="0" y="0" z="0" />
+      </transform>
+      <imageMesh atlas="StationPylon:main">
+        <mesh>totenmetro</mesh>
+        <image>PylonPrismTexture</image>
+      </imageMesh>
+      <defaultStyle>
+        <color>FFFFFFFF</color>
+        <emissiveColor>FFFFFFFF</emissiveColor>
+        <metallic>0.170128793</metallic>
+        <smoothness>0.1975461</smoothness>
+        <emissiveIntensity>0</emissiveIntensity>
+        <emissiveExposureWeight>0.188406989</emissiveExposureWeight>
+        <coatStrength>0.237148881</coatStrength>
+        <colorMask1>FFFFFF</colorMask1>
+        <colorMask2>FFFFFF</colorMask2>
+        <colorMask3>FFFFFF</colorMask3>
+      </defaultStyle>
+    </self>
+  </children>
+</WELayout>
