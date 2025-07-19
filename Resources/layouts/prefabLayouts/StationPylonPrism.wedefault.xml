@@ -86,7 +86,7 @@
         <arraySpacing x="0" y="0" z="0" />
       </transform>
       <imageMesh atlas="StationPylon:main">
-        <mesh>totenmetro</mesh>
+        <mesh>StationPylonPrismMesh</mesh>
         <image>PylonPrismTexture</image>
       </imageMesh>
       <defaultStyle>

@@ -17,7 +17,6 @@ namespace StationPylon
     public class Mod : IMod
     {
         public static ILog log = LogManager.GetLogger($"{nameof(StationPylon)}.{nameof(Mod)}").SetShowsErrorsInUI(false);
-        public static Setting m_Setting;
         public const string Id = "StationPylon";
         public static readonly BindingFlags allFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly | BindingFlags.GetField | BindingFlags.GetProperty;
         private static Harmony m_harmony;
@@ -28,12 +27,6 @@ namespace StationPylon
 
             if (GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset))
                 log.Info($"Current mod asset at {asset.path}");
-            //
-            // m_Setting = new Setting(this);
-            // m_Setting.RegisterInOptionsUI();
-            //GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(m_Setting));
-
-            //AssetDatabase.global.LoadSettings(nameof(StationPylon), m_Setting, new Setting(this));
             updateSystem.UpdateAt<SelectedBuildingUISystem>(SystemUpdatePhase.UIUpdate);
             updateSystem.UpdateAt<BuildingPickerToolSystem>(SystemUpdatePhase.ToolUpdate);
             GameManager.instance.RegisterUpdater(DoWhenLoaded);
@@ -66,6 +59,15 @@ namespace StationPylon
             
             var fontsDirectory = Path.Combine(modDir, "fonts");
             WEFontManagementBridge.RegisterModFonts(typeof(Mod).Assembly, fontsDirectory);
+            
+            var objDirectory = Path.Combine(modDir, "objMeshes");
+
+            var meshes = Directory.GetFiles(objDirectory, "*.obj", SearchOption.AllDirectories);
+            foreach (var meshFile in meshes)
+            {
+                var meshName = Path.GetFileNameWithoutExtension(meshFile);
+                WEMeshManagementBridge.RegisterMesh(typeof(Mod).Assembly, meshName, meshFile);
+            }
         }
         
         private void DoPatches()
@@ -79,6 +81,7 @@ namespace StationPylon
                              (typeof(WETemplatesManagementBridge), "TemplatesManagementBridge"),
                              (typeof(WERouteFn), "WERouteFn"),
                              (typeof(WELocalizationBridge), "LocalizationBridge"),
+                             (typeof(WEMeshManagementBridge), "MeshManagementBridge")
                          })
                 {
                     var targetType = exportedTypes.First(x => x.Name == sourceClassName);
@@ -105,11 +108,6 @@ namespace StationPylon
         public void OnDispose()
         {
             log.Info(nameof(OnDispose));
-            if (m_Setting != null)
-            {
-                m_Setting.UnregisterInOptionsUI();
-                m_Setting = null;
-            }
         }
     }
 }

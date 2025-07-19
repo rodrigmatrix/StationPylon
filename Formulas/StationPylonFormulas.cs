@@ -59,6 +59,28 @@ namespace StationPylon.Formulas
 
             return MOD_PATH + (pylonData.Value.smallIcons ? "PylonSmallArray" : "PylonRecArray");
         }
+        
+        public static int ShowSmallIcons(Entity entity, Dictionary<string, string> vars)
+        {
+            var pylonData = GetPylonData(entity);
+            if (pylonData == null)
+            {
+                return 1;
+            }
+
+            return pylonData.Value.smallIcons ? 1 : 0;
+        }
+        
+        public static int ShowRectangleIcons(Entity entity, Dictionary<string, string> vars)
+        {
+            var pylonData = GetPylonData(entity);
+            if (pylonData == null)
+            {
+                return 0;
+            }
+
+            return pylonData.Value.smallIcons ? 0 : 1;
+        }
 
         private static StationPylonData? GetPylonData(Entity entity)
         {

@@ -1,35 +1,70 @@
 ﻿<Publish>
 	<!--Id must be set in order to update existed mod. it is not required for publishing mod for the first time-->
-	<ModId Value="" />
+	<ModId Value="115701" />
 	<!--Name of the mod to display to players-->
-	<DisplayName Value="StationPylon" />
+	<DisplayName Value="Station Pylon Asset" />
 	<!--Short description of the mod-->
-	<ShortDescription Value="This is a short description" />
+	<ShortDescription Value="Display line information to pedestrians" />
 	<!--Long description of the mod. Single line or multi line. Supports minimal markdown subset-->
 	<!--LongDescription Value="This is a long description" /-->
 	<LongDescription>
-This is a long description
+# Station Pylon Asset
+
+Place pylons to display line information for subway stations, train stations, and even depots! This mod helps pedestrians easily find their way by showing which lines are available at each location.
+
+## How to Use
+1. Go to the **Transport** tab in the build menu.
+2. Select **Subway**.
+3. Pick and place the **Station Pylon** wherever you want to display line information.
+4. Click on the placed pylon to open its info panel.
+5. Click on Select Building Picker and then select the station you want the pylon to display data for.
+
+## Customization
+You can modify some visual elements, such as the wheelchair accessibility icon and others, to better fit your station's needs and style.
+### Advanced Customization
+
+You can further customize the appearance of the pylons by changing the **line operator icons** and the **icon shape (square or circle)**.  
+To do this, open the **Station Entrance Visuals** mod settings in the game's options menu. There, you can select different icon layouts and operator styles to better match your station's theme or your personal preferences.
+
+## Requirements
+- **Write Everywhere**
+- **Station Entrance Visuals**
+- **Extra Detailing Tools**
+- **Anarchy**
+
+> **Special thanks to [Klyte45](https://github.com/klyte45) for the custom mesh feature in Write Everywhere, which made this mod possible!**
 	</LongDescription>
 	<!--Thumbnail-->
 	<Thumbnail Value="Properties/Thumbnail.png" />
-	<!--Screenshot, can be set multiple times-->
-	<Screenshot Value="" />
+	<Screenshot Value="ParadoxRes/Screenshot1.png" />
+	<Screenshot Value="ParadoxRes/Screenshot2.png" />
+	<Screenshot Value="ParadoxRes/Screenshot3.png" />
+	<Screenshot Value="ParadoxRes/Screenshot4.png" />
+	<Screenshot Value="ParadoxRes/Screenshot5.png" />
+	<Screenshot Value="ParadoxRes/Screenshot6.png" />
+    <Screenshot Value="ParadoxRes/Screenshot7.png" />
 	<!--Tag, can be set multiple times-->
-	<Tag Value="" />
+	<Tag Value="Code Mod" />
 	<!--Link to the forum post where the mod can be discussed-->
-	<ForumLink Value="" />
+	<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/station-pylon-asset.1850764/" />
 	<!--Version of the mod-->
 	<ModVersion Value="1.0" />
 	<!--Recommended version of the base game to use the mod-->
-	<GameVersion Value="1.0.*" />
+	<GameVersion Value="1.*" />
 	<!--Dependency for the mod, can be set multiple times-->
-	<Dependency Id="" />
-	<!--Required DLC, can be set multiple times. Supported values are "Landmark Buildings", "San Fransisco Set", "Beach Properties", "Urban Promenades", "Modern Architecture"-->
-	<RequiredDLC Value="" />
+	<!--WE-->
+	<Dependency Id="92908" />
+	<!--Anarchy-->
+	<Dependency Id="74604" />
+	<!--Extra Detailing Tools-->
+	<Dependency Id="80528" />
+	<!--Station Entrance Visuals-->
+	<Dependency Id="95823" />
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
 	<ChangeLog Value="" />
 	<!--<ChangeLog>
 	</ChangeLog>-->
 	<!--External link, can be set multiple times. supported types are "discord", "github", "youtube", "twitch", "x", "paypal", "patreon", "buymeacoffee", "kofi", "crowdin", "gitlab", "gofundme"-->
-	<ExternalLink Type="" Url="" />
+	<ExternalLink Type="kofi" Url="https://ko-fi.com/rodrigmatrix" />
+	<ExternalLink Type="github" Url="https://github.com/rodrigmatrix/StationPylon" />
 </Publish>
