@@ -22,6 +22,8 @@ namespace StationPylon.Formulas
                 TransportLineType.All => "All",
                 TransportLineType.Subway => "Subway",
                 TransportLineType.Train => "Train",
+                TransportLineType.Bus => "Bus",
+                TransportLineType.Tram => "Tram",
                 _ => "All"
             };
 
@@ -47,17 +49,6 @@ namespace StationPylon.Formulas
             }
 
             return (pylonData.Value.showWheelchair ? "WheelchairSquare" : "Transparent");
-        }
-        
-        public static string GetIconLayout(Entity entity, Dictionary<string, string> vars)
-        {
-            var pylonData = GetPylonData(entity);
-            if (pylonData == null)
-            {
-                return MOD_PATH + "PylonRecArray";
-            }
-
-            return MOD_PATH + (pylonData.Value.smallIcons ? "PylonSmallArray" : "PylonRecArray");
         }
         
         public static int ShowSmallIcons(Entity entity, Dictionary<string, string> vars)
