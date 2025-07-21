@@ -9,7 +9,7 @@
       <arraySpacing x="0" y="0" z="0" />
     </transform>
     <imageMesh atlas="StationEntranceVisuals:main">
-      <image formulae="&amp;StationEntranceVisuals.Formulas.DisplaySettings;GetShapeIcon">LineBgSquare</image>
+      <image formulae="&amp;StationPylon.Formulas.StationPylonFormulas;GetStation/&amp;StationEntranceVisuals.Formulas.DisplaySettings;GetShapeIcon">LineBgSquare</image>
     </imageMesh>
     <defaultStyle>
       <color>FFFFFFFF</color>
