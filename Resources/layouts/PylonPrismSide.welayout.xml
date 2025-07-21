@@ -135,7 +135,7 @@
         <mustDraw formulae="&amp;StationPylon.Formulas.StationPylonFormulas;ShowRectangleIcons">1</mustDraw>
         <instanceCount formulae="&amp;StationPylon.Formulas.StationPylonFormulas;GetStation/&amp;StationEntranceVisuals.Formulas.LinesUtils;GetLineCount">4</instanceCount>
         <arrayInstances x="1" y="3" z="1" />
-        <arraySpacing x="0" y="0.244375" z="0" />
+        <arraySpacing x="0" y="-0.244375" z="0" />
       </transform>
       <layoutMesh>
         <layout>StationPylon:IconRec</layout>

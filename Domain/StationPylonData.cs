@@ -37,11 +37,12 @@ namespace StationPylon.Domain
 
         public void Deserialize<TReader>(TReader reader) where TReader : IReader
         {
-            reader.Read(out uint lineType);
+            reader.Read(out uint readLineType);
             reader.Read(out stationEntity);
             reader.Read(out showWheelchair);
             reader.Read(out smallIcons);
             reader.Read(out usePylonCustomName);
+            lineType = (TransportLineType)readLineType;
         }
     }
 }

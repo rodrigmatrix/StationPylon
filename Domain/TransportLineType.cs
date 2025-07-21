@@ -1,6 +1,6 @@
 ﻿namespace StationPylon.Domain
 {
-    public enum TransportLineType
+    public enum TransportLineType : uint
     {
         All = 0,
         Subway = 1,
