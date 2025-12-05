@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Colossal.Core;
 using Colossal.IO.AssetDatabase;
 using Colossal.Logging;
 using Game;
@@ -29,20 +30,25 @@ namespace StationPylon
                 log.Info($"Current mod asset at {asset.path}");
             updateSystem.UpdateAt<SelectedBuildingUISystem>(SystemUpdatePhase.UIUpdate);
             updateSystem.UpdateAt<BuildingPickerToolSystem>(SystemUpdatePhase.ToolUpdate);
-            GameManager.instance.RegisterUpdater(DoWhenLoaded);
+            MainThreadDispatcher.RegisterUpdater(DoWhenLoaded);
+            (AssetDatabase<ParadoxMods>.instance.dataSource as ParadoxModsDataSource).onAfterActivePlaysetOrModStatusChanged += DoWhenLoaded;
         }
-        
+        private bool isLoaded = false;
         private void DoWhenLoaded()
         {
+            if (isLoaded) return;
             log.Info($"Loading patches");
-            DoPatches();
+            if (!DoPatches()) return;
             RegisterModFiles();
-        }
+            isLoaded = true;
+            (AssetDatabase<ParadoxMods>.instance.dataSource as ParadoxModsDataSource).onAfterActivePlaysetOrModStatusChanged -= DoWhenLoaded;
+        }       
 
         private void RegisterModFiles()
         {
             GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset);
             var modDir = Path.GetDirectoryName(asset.path);
+
             var imagesDirectory = Path.Combine(modDir, "atlases");
             if (Directory.Exists(imagesDirectory))
             {
@@ -56,53 +62,53 @@ namespace StationPylon
             var layoutsDirectory = Path.Combine(modDir, "layouts");
             WETemplatesManagementBridge.RegisterCustomTemplates(typeof(Mod).Assembly, layoutsDirectory);
             WETemplatesManagementBridge.RegisterLoadableTemplatesFolder(typeof(Mod).Assembly, layoutsDirectory);
-            
+
+
             var fontsDirectory = Path.Combine(modDir, "fonts");
             WEFontManagementBridge.RegisterModFonts(typeof(Mod).Assembly, fontsDirectory);
-            
-            var objDirectory = Path.Combine(modDir, "objMeshes");
 
-            var meshes = Directory.GetFiles(objDirectory, "*.obj", SearchOption.AllDirectories);
-            foreach (var meshFile in meshes)
+            var objDirctory = Path.Combine(modDir, "objMeshes");
+
+            if (Directory.Exists(objDirctory))
             {
-                var meshName = Path.GetFileNameWithoutExtension(meshFile);
-                WEMeshManagementBridge.RegisterMesh(typeof(Mod).Assembly, meshName, meshFile);
-            }
-        }
-        
-        private void DoPatches()
-        {
-            if (AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.GetName().Name == "BelzontWE") is Assembly weAssembly)
-            {
-                var exportedTypes = weAssembly.ExportedTypes;
-                foreach (var (type, sourceClassName) in new List<(Type, string)>() {
-                             (typeof(WEFontManagementBridge), "FontManagementBridge"),
-                             (typeof(WEImageManagementBridge), "ImageManagementBridge"),
-                             (typeof(WETemplatesManagementBridge), "TemplatesManagementBridge"),
-                             (typeof(WERouteFn), "WERouteFn"),
-                             (typeof(WELocalizationBridge), "LocalizationBridge"),
-                             (typeof(WEMeshManagementBridge), "MeshManagementBridge")
-                         })
+                var meshes = Directory.GetFiles(objDirctory, "*.obj", SearchOption.AllDirectories);
+                foreach (var meshFile in meshes)
                 {
-                    var targetType = exportedTypes.First(x => x.Name == sourceClassName);
-                    foreach (var method in type.GetMethods(BindingFlags.Public | BindingFlags.Static))
+                    var meshName = Path.GetFileNameWithoutExtension(meshFile);
+                    if (!WEMeshManagementBridge.RegisterMesh(typeof(Mod).Assembly, meshName, meshFile))
                     {
-                        var srcMethod = targetType.GetMethod(method.Name, allFlags, null, method.GetParameters().Select(x => x.ParameterType).ToArray(), null);
-                        if (srcMethod != null)
-                        {
-                            Harmony.ReversePatch(srcMethod, new HarmonyMethod(method));
-                        }
-                        else
-                        {
-                            log.Warn($"Method not found while patching WE: {targetType.FullName} {srcMethod.Name}({string.Join(", ", method.GetParameters().Select(x => $"{x.ParameterType}"))})");
-                        }
+                        log.Warn($"Failed to register mesh: {meshName} from {meshFile}");
                     }
                 }
             }
-            else
+        }
+
+        private bool DoPatches()
+        {
+            var weAsset = AssetDatabase.global.GetAsset(SearchFilter<ExecutableAsset>.ByCondition(asset => asset.isLoaded && asset.name.Equals("BelzontWE")));
+            if (weAsset?.assembly is null)
             {
-                throw new Exception("Write Everywhere dll file required for using this mod! Check if it's enabled.");
+                log.Error($"The module {GetType().Assembly.GetName().Name} requires Write Everywhere mod to work!");
+                return false;
             }
+
+            var exportedTypes = weAsset.assembly.ExportedTypes;
+            foreach (var (type, sourceClassName) in new List<(Type, string)>() {
+                    (typeof(WEFontManagementBridge), "FontManagementBridge"),
+                    (typeof(WEImageManagementBridge), "ImageManagementBridge"),
+                    (typeof(WETemplatesManagementBridge), "TemplatesManagementBridge"),
+                    (typeof(WEMeshManagementBridge), "MeshManagementBridge"),
+                })
+            {
+                var targetType = exportedTypes.First(x => x.Name == sourceClassName);
+                foreach (var method in type.GetMethods(BindingFlags.Public | BindingFlags.Static))
+                {
+                    var srcMethod = targetType.GetMethod(method.Name, allFlags, null, method.GetParameters().Select(x => x.ParameterType).ToArray(), null);
+                    if (srcMethod != null) Harmony.ReversePatch(srcMethod, method);
+                    else log.Warn($"Method not found while patching WE: {targetType.FullName} {srcMethod.Name}({string.Join(", ", method.GetParameters().Select(x => $"{x.ParameterType}"))})");
+                }
+            }
+            return true;
         }
 
         public void OnDispose()

@@ -46,10 +46,11 @@ To do this, open the **Station Entrance Visuals** mod settings in the game's opt
 	<Screenshot Value="ParadoxRes/Screenshot8.png" />
 	<!--Tag, can be set multiple times-->
 	<Tag Value="Code Mod" />
+	<Tag Value="AssetPack" />
 	<!--Link to the forum post where the mod can be discussed-->
 	<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/station-pylon-asset.1850764/" />
 	<!--Version of the mod-->
-	<ModVersion Value="1.4" />
+	<ModVersion Value="1.5.3" />
 	<!--Recommended version of the base game to use the mod-->
 	<GameVersion Value="1.*" />
 	<!--Dependency for the mod, can be set multiple times-->
@@ -63,9 +64,8 @@ To do this, open the **Station Entrance Visuals** mod settings in the game's opt
 	<Dependency Id="95823" />
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
 	<ChangeLog>
-# v1.3
- - Updated pylon cube mesh
- - Updated pylon cube texture
+# v1.5.3
+ - Updated to new game version
 	</ChangeLog>
 	<!--<ChangeLog>
 	</ChangeLog>-->

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Colossal.Entities;
 using Colossal.Logging;
 using Game.Areas;
@@ -9,10 +10,13 @@ using Game.Objects;
 using Game.Prefabs;
 using Game.Rendering;
 using Game.Tools;
+using Game.UI;
 using StationPylon.Domain;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
+using SubObject = Game.Objects.SubObject;
+using TransportStation = Game.Buildings.TransportStation;
 
 namespace StationPylon.System
 {
@@ -23,6 +27,8 @@ namespace StationPylon.System
 		private Entity m_PreviousSelectedEntity;
 		private EntityQuery m_HighlightedQuery;
 		private ToolOutputBarrier m_Barrier;
+		private PrefabSystem prefabSystem;
+		private NameSystem nameSystem;
 
 		public override string toolID => "StationPylonPickerTool";
 		private Entity m_TargetPylonEntity;
@@ -32,8 +38,9 @@ namespace StationPylon.System
 			base.OnCreate();
 			Enabled = false;
 			m_Barrier = World.GetOrCreateSystemManaged<ToolOutputBarrier>();
-            
+			prefabSystem = World.DefaultGameObjectInjectionWorld?.GetOrCreateSystemManaged<PrefabSystem>();
 			m_HighlightedQuery = GetEntityQuery(ComponentType.ReadOnly<Highlighted>());
+			nameSystem = World.DefaultGameObjectInjectionWorld?.GetOrCreateSystemManaged<NameSystem>();
 		}
 
 		public override void InitializeRaycast()
@@ -49,7 +56,7 @@ namespace StationPylon.System
 		protected override void OnStartRunning()
 		{
 			base.OnStartRunning();
-			applyAction.enabled = true;
+			applyAction.shouldBeEnabled = true;
 		}
 
 		protected override void OnStopRunning()
@@ -64,7 +71,7 @@ namespace StationPylon.System
 		{
             EntityCommandBuffer buffer = m_Barrier.CreateCommandBuffer();
             
-            if (!GetRaycastResult(out var currentRaycastEntity, out RaycastHit _) && !IsValidPrefab(ref currentRaycastEntity))
+            if (!GetRaycastResult(out var currentRaycastEntity, out RaycastHit _))
             {
                 buffer.AddComponent<BatchesUpdated>(m_HighlightedQuery, EntityQueryCaptureMode.AtPlayback);
                 buffer.RemoveComponent<Highlighted>(m_HighlightedQuery, EntityQueryCaptureMode.AtPlayback);
@@ -80,7 +87,7 @@ namespace StationPylon.System
                 buffer.RemoveComponent<Highlighted>(entities);
             }
             
-            if (m_HighlightedQuery.IsEmptyIgnoreFilter)
+            if (m_HighlightedQuery.IsEmptyIgnoreFilter && IsValidPrefab(currentRaycastEntity))
             {
                 buffer.AddComponent<BatchesUpdated>(currentRaycastEntity);
                 buffer.AddComponent<Highlighted>(currentRaycastEntity);
@@ -91,29 +98,50 @@ namespace StationPylon.System
             {
                 return inputDeps;
             }
-            
             OnStationSelected(currentRaycastEntity, buffer);
             m_ToolSystem.activeTool = m_DefaultToolSystem;
             return base.OnUpdate(inputDeps);
 		}
 
-		private bool IsValidPrefab(ref Entity entity)
+		private bool HasPedestrianAccess(Entity entity)
+		{
+			if (EntityManager.TryGetBuffer<SubObject>(entity, false, out var subObjects))
+			{
+
+				foreach (var subObject in subObjects)
+				{
+					if (nameSystem.GetDebugName(subObject.m_SubObject).Contains("Pedestrian Spawn Location"))
+					{
+						return true;
+					}
+				}
+			}
+
+			return false;
+		}
+
+		private bool IsValidPrefab(Entity entity)
 		{
 			var owner = GetOwner(entity);
-			Mod.log.Info("has building " + EntityManager.HasComponent<Building>(owner));
-			Mod.log.Info("has transport " + EntityManager.HasComponent<TransportStationData>(owner));
+		
+			if (EntityManager.HasComponent<TransportStation>(owner))
+			{
+				Mod.log.Info("transportStationData ");
+			}
 			
-			return EntityManager.HasComponent<Building>(entity) && EntityManager.HasComponent<TransportStationData>(entity);
+			if (EntityManager.HasComponent<Building>(owner))
+			{
+				Mod.log.Info("building ");
+			}
+			
+			return EntityManager.HasComponent<Building>(entity) &&
+			       (HasPedestrianAccess(entity) || HasPedestrianAccess(owner));
 		}
 
 		private Entity GetOwner(Entity currentEntity)
 		{
-			if (World.DefaultGameObjectInjectionWorld.EntityManager.TryGetComponent<Owner>(currentEntity,
-				    out var owner))
-			{
-				return GetOwner(owner.m_Owner);
-			}
-			return currentEntity;
+			return World.DefaultGameObjectInjectionWorld.EntityManager.TryGetComponent<Owner>(currentEntity,
+				out var owner) ? GetOwner(owner.m_Owner) : currentEntity;
 		}
 
 		public override bool TrySetPrefab(PrefabBase prefab)
