@@ -29,8 +29,6 @@ To do this, open the **Station Entrance Visuals** mod settings in the game's opt
 ## Requirements
 - **Write Everywhere**
 - **Station Entrance Visuals**
-- **Extra Detailing Tools**
-- **Anarchy**
 
 > **Special thanks to Klyte45 for the custom mesh feature in Write Everywhere, which made this mod possible!**
 	</LongDescription>
@@ -47,6 +45,7 @@ To do this, open the **Station Entrance Visuals** mod settings in the game's opt
 	<!--Tag, can be set multiple times-->
 	<Tag Value="Code Mod" />
 	<Tag Value="AssetPack" />
+	<Tag Value="Prefab" />
 	<!--Link to the forum post where the mod can be discussed-->
 	<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/station-pylon-asset.1850764/" />
 	<!--Version of the mod-->
@@ -56,10 +55,6 @@ To do this, open the **Station Entrance Visuals** mod settings in the game's opt
 	<!--Dependency for the mod, can be set multiple times-->
 	<!--WE-->
 	<Dependency Id="92908" />
-	<!--Anarchy-->
-	<Dependency Id="74604" />
-	<!--Extra Detailing Tools-->
-	<Dependency Id="80528" />
 	<!--Station Entrance Visuals-->
 	<Dependency Id="95823" />
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
