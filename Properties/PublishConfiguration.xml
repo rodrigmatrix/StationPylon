@@ -50,7 +50,7 @@ To do this, open the **Station Entrance Visuals** mod settings in the game's opt
 	<!--Link to the forum post where the mod can be discussed-->
 	<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/station-pylon-asset.1850764/" />
 	<!--Version of the mod-->
-	<ModVersion Value="1.5.3" />
+	<ModVersion Value="2.0" />
 	<!--Recommended version of the base game to use the mod-->
 	<GameVersion Value="1.*" />
 	<!--Dependency for the mod, can be set multiple times-->
@@ -64,8 +64,10 @@ To do this, open the **Station Entrance Visuals** mod settings in the game's opt
 	<Dependency Id="95823" />
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
 	<ChangeLog>
-# v1.5.3
- - Updated to new game version
+# v2.0
+ - Official Mesh support from the Asset Editor
+ - Asset is now a prop can can be easily selected. This will require removing the old ones from your save game and replacing with the new one.
+ - Outdated pylons will still work, but you won't be able to change their settings. Please remove and add a new pylon
 	</ChangeLog>
 	<!--<ChangeLog>
 	</ChangeLog>-->

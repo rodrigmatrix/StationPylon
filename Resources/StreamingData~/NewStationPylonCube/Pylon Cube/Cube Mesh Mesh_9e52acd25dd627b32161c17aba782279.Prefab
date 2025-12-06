@@ -1,0 +1,46 @@
+{
+    "$id": 0,
+    "$type": "0|Game.Prefabs.RenderPrefab, Game",
+    "name": "Cube Mesh Mesh",
+    "active": true,
+    "version": 1,
+    "components": {
+        "$id": 1,
+        "$type": "1|System.Collections.Generic.List`1[[Game.Prefabs.ComponentBase, Game]], mscorlib",
+        "$rlength": 0,
+        "$rcontent": [
+        ]
+    },
+    "m_GeometryAsset": $fstrref:"CID:ac5f2c4575b05c0d3a1a28abc24ef998",
+    "m_SurfaceAssets": {
+        "$id": 2,
+        "$type": "2|Colossal.IO.AssetDatabase.AssetReference`1[[Colossal.IO.AssetDatabase.SurfaceAsset, Colossal.IO.AssetDatabase, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]][], Colossal.IO.AssetDatabase",
+        "$rlength": 3,
+        "$rcontent": [
+            $fstrref:"CID:c2cc6460e1d93dff1d252f03295c5ae9",
+            $fstrref:"CID:933b3852457a29400b1bf8f75d37ee4c",
+            $fstrref:"CID:493e7a3f0c884cb53a171d0a452a4586"
+        ]
+    },
+    "m_Bounds": {
+        "$type": "3|Colossal.Mathematics.Bounds3, Colossal.Mathematics",
+        "min": {
+            "$type": "4|Unity.Mathematics.float3, Unity.Mathematics",
+            "x": -0.9462112,
+            "y": -2.75369287,
+            "z": -0.379930526
+        },
+        "max": {
+            "$type": 4,
+            "x": -0.256021261,
+            "y": 2.531489,
+            "z": 0.3102598
+        }
+    },
+    "m_SurfaceArea": 15.4277487,
+    "m_IndexCount": 918,
+    "m_VertexCount": 400,
+    "m_MeshCount": 3,
+    "m_IsImpostor": false,
+    "m_ManualVTRequired": false
+}

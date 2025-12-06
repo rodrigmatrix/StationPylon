@@ -47,7 +47,7 @@ namespace StationPylon.System
             base.OnUpdate();
             visible = false;
             var buildingName = _nameSystem.GetDebugName(selectedEntity);
-            if (buildingName.Contains("StationPylonPrism") || buildingName.Contains("StationPylonCube"))
+            if (buildingName.Contains("NewStationPylonPrism") || buildingName.Contains("NewStationPylonCube"))
             {
                 visible = true;
                 _stationUiPylonDataBinding.Value = GetPylonData();

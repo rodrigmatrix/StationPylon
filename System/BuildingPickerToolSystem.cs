@@ -103,39 +103,11 @@ namespace StationPylon.System
             return base.OnUpdate(inputDeps);
 		}
 
-		private bool HasPedestrianAccess(Entity entity)
-		{
-			if (EntityManager.TryGetBuffer<SubObject>(entity, false, out var subObjects))
-			{
-
-				foreach (var subObject in subObjects)
-				{
-					if (nameSystem.GetDebugName(subObject.m_SubObject).Contains("Pedestrian Spawn Location"))
-					{
-						return true;
-					}
-				}
-			}
-
-			return false;
-		}
-
 		private bool IsValidPrefab(Entity entity)
 		{
 			var owner = GetOwner(entity);
-		
-			if (EntityManager.HasComponent<TransportStation>(owner))
-			{
-				Mod.log.Info("transportStationData ");
-			}
 			
-			if (EntityManager.HasComponent<Building>(owner))
-			{
-				Mod.log.Info("building ");
-			}
-			
-			return EntityManager.HasComponent<Building>(entity) &&
-			       (HasPedestrianAccess(entity) || HasPedestrianAccess(owner));
+			return EntityManager.HasComponent<Building>(owner);
 		}
 
 		private Entity GetOwner(Entity currentEntity)

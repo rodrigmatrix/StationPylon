@@ -1,3 +1,13 @@
 ﻿{
-  "StationPylon.NotOperating": "Not operating"
+  "StationPylon.NotOperating": "Not operating",
+  "Assets.NAME[StationPylonPrism]": "[OUTDATED] Please remove and place new pylon under the bus tab",
+  "Assets.DESCRIPTION[StationPylonPrism]": "Remove this, place a new pylon and select the station again",
+  "Assets.NAME[StationPylonCube]": "[OUTDATED] Please remove and place new pylon under the bus tab",
+  "Assets.DESCRIPTION[StationPylonCube]": "Remove this, place a new pylon and select the station again",
+  
+  
+  "Assets.NAME[NewStationPylonPrism]": "Station Pylon Prism",
+  "Assets.DESCRIPTION[NewStationPylonPrism]": "Place and select the prop to pick a station to display relevant information to pedestrians.",
+  "Assets.NAME[NewStationPylonCube]": "Station Pylon Cube",
+  "Assets.DESCRIPTION[NewStationPylonCube]": "Place and select the prop to pick a station to display relevant information to pedestrians."
 }
