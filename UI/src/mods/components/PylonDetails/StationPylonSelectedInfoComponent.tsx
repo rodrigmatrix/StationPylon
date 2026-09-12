@@ -6,6 +6,7 @@ import { getModule } from "cs2/modding";
 import { Theme } from "cs2/bindings";
 import {CheckBoxWithLine} from "../checkbox/checkbox";
 import PickerIcon from "../../../images/Picker.png";
+import trashIcon from "../../../images/Trash.svg";
 import { FormLine } from "../form-line/form-line";
 import {TransportType} from "../../domain/TransportType";
 import {OnPylonDataChanged, SelectedPylon, OnOpenPicker} from "../../bindings";
@@ -87,17 +88,37 @@ const StationPylonRow = () => {
 							/>
 						</div>
 					</FormLine>
-					<div style={{ display: 'flex', alignItems: 'center', marginLeft: 26, marginRight: 24, marginBottom: 8 }}>
-						<span style={{ flex: 1 }}>{"Selected building:"}</span>
-						<span style={{
-							color: selectedPylon.SelectedBuildingName && selectedPylon.SelectedBuildingName.trim() !== "" ? "green" : "red",
-							fontWeight: 500
-						}}>
-							{selectedPylon.SelectedBuildingName && selectedPylon.SelectedBuildingName.trim() !== "" 
-								? selectedPylon.SelectedBuildingName 
-								: "None"}
-						</span>
-					</div>
+					
+					{selectedPylon.Stations && selectedPylon.Stations.length > 0 ? (
+						<div style={{ marginLeft: 26, marginRight: 24, marginBottom: 8 }}>
+							<div style={{ fontWeight: 'bold', marginBottom: 4 }}>Selected Stations:</div>
+							{selectedPylon.Stations.map((station, idx) => (
+								<div key={idx} style={{ display: 'flex', alignItems: 'center', marginBottom: 4 }}>
+									<span style={{ flex: 1, color: "green", fontWeight: 500 }}>{station.Name}</span>
+									<Tooltip tooltip={"Remove Station"}>
+										<img
+											src={trashIcon}
+											className={styles.removeButton}
+											onClick={() => {
+												const updatedStations = selectedPylon.Stations.filter((_, i) => i !== idx);
+												const updatedPylon = {
+													...selectedPylon,
+													Stations: updatedStations,
+													StationEntity: updatedStations.length > 0 ? updatedStations[0].Entity : { index: 0, version: 0 }
+												};
+												OnPylonDataChanged(updatedPylon);
+											}}
+										/>
+									</Tooltip>
+								</div>
+							))}
+						</div>
+					) : (
+						<div style={{ display: 'flex', alignItems: 'center', marginLeft: 26, marginRight: 24, marginBottom: 8 }}>
+							<span style={{ flex: 1 }}>{"Selected building:"}</span>
+							<span style={{ color: "red", fontWeight: 500 }}>{"None"}</span>
+						</div>
+					)}
 					<CheckBoxWithLine
 						title={"Show Wheelchair Icon"}
 						isChecked={selectedPylon.ShowWheelchair}

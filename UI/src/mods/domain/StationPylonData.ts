@@ -5,4 +5,10 @@ export interface StationPylonData {
     UsePylonCustomName: boolean;
     TransportType: number;
     StationEntity: any;
+    Stations: StationUIElement[];
+}
+
+export interface StationUIElement {
+    Entity: any;
+    Name: string;
 }

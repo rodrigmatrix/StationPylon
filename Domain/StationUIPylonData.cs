@@ -1,4 +1,4 @@
-﻿using Unity.Entities;
+using Unity.Entities;
 
 namespace StationPylon.Domain
 {
@@ -10,5 +10,12 @@ namespace StationPylon.Domain
         public bool ShowWheelchair = true;
         public bool SmallIcons = true;
         public bool UsePylonCustomName = false;
+        public StationUIElement[] Stations;
+    }
+
+    public class StationUIElement
+    {
+        public Entity Entity;
+        public string Name;
     }
 }

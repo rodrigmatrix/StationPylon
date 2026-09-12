@@ -18,6 +18,7 @@ Place pylons to display line information for subway, train, bus, trams and even 
 3. Pick and place the **Station Pylon Prism or Station Pylon Cube** wherever you want to display line information.
 4. Click on the placed pylon to open its info panel.
 5. Click on Select Building Picker and then select the station, stop or any other object you want the pylon to display data for.
+6. You can also select multiple stations for the same pylon
 
 ## Customization
 You can modify some visual elements, such as the wheelchair accessibility icon and others, to better fit your station's needs and style.
@@ -49,7 +50,7 @@ To do this, open the **Station Entrance Visuals** mod settings in the game's opt
 	<!--Link to the forum post where the mod can be discussed-->
 	<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/station-pylon-asset.1850764/" />
 	<!--Version of the mod-->
-	<ModVersion Value="2.0.1" />
+	<ModVersion Value="3.0" />
 	<!--Recommended version of the base game to use the mod-->
 	<GameVersion Value="1.*" />
 	<!--Dependency for the mod, can be set multiple times-->
@@ -59,8 +60,9 @@ To do this, open the **Station Entrance Visuals** mod settings in the game's opt
 	<Dependency Id="95823" />
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
 	<ChangeLog>
-# v2.0.1
- - Fixing icons not showing up
+# v3.0
+ - You can now select multiple stations on the same pylon
+ - You can delete individual stations selecting the pylon
 	</ChangeLog>
 	<!--<ChangeLog>
 	</ChangeLog>-->

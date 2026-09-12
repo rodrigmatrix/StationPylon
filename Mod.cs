@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -108,6 +108,32 @@ namespace StationPylon
                     else log.Warn($"Method not found while patching WE: {targetType.FullName} {srcMethod.Name}({string.Join(", ", method.GetParameters().Select(x => $"{x.ParameterType}"))})");
                 }
             }
+
+            // Apply Harmony patch for LinesUtils.GetLines
+            try
+            {
+                m_harmony = new Harmony(Id);
+                var seVisualsAssembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.GetName().Name == "StationEntranceVisuals");
+                if (seVisualsAssembly != null)
+                {
+                    var linesUtilsType = seVisualsAssembly.GetType("StationEntranceVisuals.Formulas.LinesUtils");
+                    if (linesUtilsType != null)
+                    {
+                        var getLinesMethod = linesUtilsType.GetMethod("GetLines", BindingFlags.NonPublic | BindingFlags.Static);
+                        var prefixMethod = typeof(LinesUtilsPatch).GetMethod("Prefix", BindingFlags.Public | BindingFlags.Static);
+                        if (getLinesMethod != null && prefixMethod != null)
+                        {
+                            m_harmony.Patch(getLinesMethod, prefix: new HarmonyMethod(prefixMethod));
+                            log.Info("Successfully patched LinesUtils.GetLines!");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Warn($"Failed to apply Harmony patch for LinesUtils: {ex}");
+            }
+
             return true;
         }
 

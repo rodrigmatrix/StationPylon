@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Colossal.Entities;
 using Colossal.Logging;
@@ -139,11 +139,49 @@ namespace StationPylon.System
 				return;
 			}
 			
+			DynamicBuffer<StationPylonStationElement> stationBuffer;
+			if (EntityManager.HasBuffer<StationPylonStationElement>(m_TargetPylonEntity))
+			{
+				stationBuffer = EntityManager.GetBuffer<StationPylonStationElement>(m_TargetPylonEntity);
+			}
+			else
+			{
+				// Lazily create buffer and migrate the old single stationEntity if it exists
+				stationBuffer = buffer.AddBuffer<StationPylonStationElement>(m_TargetPylonEntity);
+				var stationEntity = Entity.Null;
+				if (EntityManager.HasComponent<StationPylonData>(m_TargetPylonEntity))
+				{
+					stationEntity = EntityManager.GetComponentData<StationPylonData>(m_TargetPylonEntity).stationEntity;
+				}
+				if (stationEntity != Entity.Null)
+				{
+					buffer.AppendToBuffer(m_TargetPylonEntity, new StationPylonStationElement(stationEntity));
+				}
+			}
+			
+			bool exists = false;
+			for (int i = 0; i < stationBuffer.Length; i++)
+			{
+				if (stationBuffer[i].stationEntity == selectedStation)
+				{
+					exists = true;
+					break;
+				}
+			}
+			
+			if (!exists)
+			{
+				buffer.AppendToBuffer(m_TargetPylonEntity, new StationPylonStationElement(selectedStation));
+			}
+
 			if (EntityManager.HasComponent<StationPylonData>(m_TargetPylonEntity))
 			{
-				var pylonData = World.DefaultGameObjectInjectionWorld.EntityManager.GetComponentData<StationPylonData>(m_TargetPylonEntity);
-				pylonData.stationEntity = selectedStation;
-				buffer.SetComponent(m_TargetPylonEntity, pylonData);
+				var pylonData = EntityManager.GetComponentData<StationPylonData>(m_TargetPylonEntity);
+				if (pylonData.stationEntity == Entity.Null)
+				{
+					pylonData.stationEntity = selectedStation;
+					buffer.SetComponent(m_TargetPylonEntity, pylonData);
+				}
 			}
 			else
 			{

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Colossal.Entities;
 using StationPylon.Domain;
 using Unity.Entities;
@@ -27,7 +27,7 @@ namespace StationPylon.Formulas
                 _ => "All"
             };
 
-            return pylonData.GetValueOrDefault().stationEntity;
+            return entity;
         }
         
         public static string GetName(Entity entity, Dictionary<string, string> vars)
@@ -37,7 +37,31 @@ namespace StationPylon.Formulas
             {
                 return BuildingName.GetMainBuildingName(entity);
             }
-            return pylonData.Value.usePylonCustomName ? BuildingName.GetMainBuildingName(entity) : BuildingName.GetMainBuildingName(pylonData.Value.stationEntity);
+            if (pylonData.Value.usePylonCustomName)
+            {
+                return BuildingName.GetMainBuildingName(entity);
+            }
+            
+            var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+            if (entityManager.HasBuffer<StationPylonStationElement>(entity))
+            {
+                var buffer = entityManager.GetBuffer<StationPylonStationElement>(entity);
+                for (int i = 0; i < buffer.Length; i++)
+                {
+                    var stEntity = buffer[i].stationEntity;
+                    if (stEntity != Entity.Null && entityManager.Exists(stEntity) && !entityManager.HasComponent<Game.Common.Deleted>(stEntity))
+                    {
+                        return BuildingName.GetMainBuildingName(stEntity);
+                    }
+                }
+            }
+            
+            if (pylonData.Value.stationEntity == Entity.Null || !entityManager.Exists(pylonData.Value.stationEntity) || entityManager.HasComponent<Game.Common.Deleted>(pylonData.Value.stationEntity))
+            {
+                return BuildingName.GetMainBuildingName(entity);
+            }
+            
+            return BuildingName.GetMainBuildingName(pylonData.Value.stationEntity);
         }
         
         public static string GetWheelchairIcon(Entity entity, Dictionary<string, string> vars)

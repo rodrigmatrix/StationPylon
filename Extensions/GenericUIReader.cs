@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -18,6 +18,12 @@ namespace StationPylon.Extensions
 
         private static object ReadGeneric(IJsonReader reader, Type type)
         {
+            if (reader.PeekValueType() == cohtml.Net.ValueType.Null || reader.PeekValueType() == cohtml.Net.ValueType.Undefined)
+            {
+                reader.SkipValue();
+                return type.IsValueType ? Activator.CreateInstance(type) : null;
+            }
+
             if (type.IsAssignableFrom(typeof(IJsonReadable)))
             {
                 var value = (IJsonReadable)Activator.CreateInstance(type);
